@@ -15,7 +15,7 @@ import lombok.extern.java.Log;
 import static javafx.scene.text.TextBoundsType.LOGICAL_VERTICAL_CENTER;
 
 @Log
-public class Block extends Entity {
+public class Block extends Entity implements EventHandler<BlockCanTouchEvent> {
 
     /**
      * 目标划线数
@@ -76,6 +76,8 @@ public class Block extends Entity {
             }
         });
 
+        FXGL.getEventBus().addEventHandler(BlockCanTouchEvent.BLOCK_CAN_TOUCH_EVENT,this);
+
     }
 
     private void addCrossNumberLeft(int n){
@@ -97,5 +99,14 @@ public class Block extends Entity {
     public void reset(){
         crossNumberLeft=crossNumberTarget;
         updateText();
+    }
+
+    @Override
+    public void handle(BlockCanTouchEvent blockCanTouchEvent) {
+        if (blockCanTouchEvent.getCellX()==cellX&&blockCanTouchEvent.getCellY()==cellY){
+            canCross=true;
+        }else {
+            canCross=false;
+        }
     }
 }
