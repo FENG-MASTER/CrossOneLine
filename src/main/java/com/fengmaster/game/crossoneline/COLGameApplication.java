@@ -112,16 +112,16 @@ public class COLGameApplication extends GameApplication implements EventHandler<
         int cellX = blockCrossedEvent.getBlock().getCellX();
         int cellY = blockCrossedEvent.getBlock().getCellY();
 
-        if (cellX - 1 > 0&&cellY>0 &&cellX-1<5&&cellY<5) {
+        if (cellX - 1 >= 0&&cellY>=0 &&cellX-1<5&&cellY<5) {
             FXGL.getEventBus().fireEvent(new BlockCanTouchEvent(cellX-1,cellY));
         }
-        if (cellX + 1 > 0&&cellY>0 &&cellX+1<5&&cellY<5) {
+        if (cellX + 1 >= 0&&cellY>=0 &&cellX+1<5&&cellY<5) {
             FXGL.getEventBus().fireEvent(new BlockCanTouchEvent(cellX+1,cellY));
         }
-        if (cellX > 0&&cellY-1>0 &&cellX<5&&cellY-1<5) {
+        if (cellX >= 0&&cellY-1>=0 &&cellX<5&&cellY-1<5) {
             FXGL.getEventBus().fireEvent(new BlockCanTouchEvent(cellX,cellY-1));
         }
-        if (cellX  > 0&&cellY+1>0 &&cellX<5&&cellY+1<5) {
+        if (cellX  >= 0&&cellY+1>=0 &&cellX<5&&cellY+1<5) {
             FXGL.getEventBus().fireEvent(new BlockCanTouchEvent(cellX,cellY+1));
         }
     }

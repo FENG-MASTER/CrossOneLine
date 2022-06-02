@@ -98,6 +98,7 @@ public class Block extends Entity implements EventHandler<BlockCanTouchEvent> {
 
     public void reset(){
         crossNumberLeft=crossNumberTarget;
+        canCross=false;
         updateText();
     }
 
