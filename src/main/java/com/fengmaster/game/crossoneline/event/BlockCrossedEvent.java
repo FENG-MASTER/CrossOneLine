@@ -1,6 +1,6 @@
-package com.fengmaster.game.crossoneline;
+package com.fengmaster.game.crossoneline.event;
 
-import javafx.event.Event;
+import com.fengmaster.game.crossoneline.Block;
 import javafx.event.EventType;
 import lombok.Getter;
 

@@ -1,4 +1,4 @@
-package com.fengmaster.game.crossoneline;
+package com.fengmaster.game.crossoneline.base;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

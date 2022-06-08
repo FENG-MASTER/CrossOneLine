@@ -5,20 +5,15 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.input.MouseEventData;
-import com.almasb.fxgl.input.Trigger;
-import com.almasb.fxgl.input.TriggerListener;
-import com.almasb.fxgl.input.UserAction;
+import com.fengmaster.game.crossoneline.base.BlockPostion;
+import com.fengmaster.game.crossoneline.event.BlockCanTouchEvent;
+import com.fengmaster.game.crossoneline.event.BlockCannotTouchEvent;
+import com.fengmaster.game.crossoneline.event.BlockCrossedEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
-import javafx.scene.input.MouseButton;
 import lombok.extern.java.Log;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 
 @Log

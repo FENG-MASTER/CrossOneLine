@@ -5,4 +5,6 @@ open module COL {
     requires com.almasb.fxgl.all;
     requires annotations;
     exports com.fengmaster.game.crossoneline;
+    exports com.fengmaster.game.crossoneline.event;
+    exports com.fengmaster.game.crossoneline.base;
 }

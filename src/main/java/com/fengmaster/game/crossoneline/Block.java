@@ -5,12 +5,21 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.texture.Texture;
+import com.fengmaster.game.crossoneline.base.BlockColorMapper;
+import com.fengmaster.game.crossoneline.event.BlockCanTouchEvent;
+import com.fengmaster.game.crossoneline.event.BlockCannotTouchEvent;
+import com.fengmaster.game.crossoneline.event.BlockClickEvent;
+import com.fengmaster.game.crossoneline.event.BlockCrossedEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.VPos;
 import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.ColorInput;
+import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import lombok.Getter;
 import lombok.Setter;
@@ -109,7 +118,7 @@ public class Block extends Entity implements EventHandler<Event> {
 
         FXGL.getEventBus().addEventHandler(BlockCanTouchEvent.BLOCK_CAN_TOUCH_EVENT,this);
         FXGL.getEventBus().addEventHandler(BlockCannotTouchEvent.BLOCK_CAN_NOT_TOUCH_EVENT,this);
-
+        updateTextAndImg();
     }
 
     private void addCrossNumberLeft(int n){
@@ -119,12 +128,11 @@ public class Block extends Entity implements EventHandler<Event> {
 
     private void updateTextAndImg(){
         text.setText(""+crossNumberLeft);
+        blockTexture.setEffect(new ColorInput(5,5,40,40, BlockColorMapper.getBlockColorByNumber(crossNumberLeft)));
         if (canCross){
-           blockTexture.setBlendMode(BlendMode.RED);
+            blockTexture.setRotate(0.1);
         }else {
-            blockTexture.setBlendMode(BlendMode.SRC_ATOP);
-
-
+            blockTexture.setRotate(1);
         }
 
     }
@@ -134,7 +142,6 @@ public class Block extends Entity implements EventHandler<Event> {
     public void setTexture(String texture) {
         blockTexture = FXGL.getAssetLoader().loadTexture(texture, 50, 50);
         this.getViewComponent().addChild(blockTexture);
-
     }
 
     public void reset(){

@@ -1,4 +1,4 @@
-package com.fengmaster.game.crossoneline;
+package com.fengmaster.game.crossoneline.event;
 
 import javafx.event.Event;
 import javafx.event.EventType;
