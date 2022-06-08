@@ -10,6 +10,7 @@ import com.almasb.fxgl.input.Trigger;
 import com.almasb.fxgl.input.TriggerListener;
 import com.almasb.fxgl.input.UserAction;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.input.MouseButton;
 import lombok.extern.java.Log;
 import org.jetbrains.annotations.NotNull;
@@ -27,6 +28,10 @@ public class COLGameApplication extends GameApplication implements EventHandler<
     private int[][] riddles;
 
     private List<Entity> entities;
+
+    private Block lastLinkBlock;
+
+    private List<BlockPostion> lastCanTouchPostions=new ArrayList<>();
 
 
     @Override
@@ -75,31 +80,6 @@ public class COLGameApplication extends GameApplication implements EventHandler<
     @Override
     protected void initInput() {
 
-        FXGL.getInput().addAction(new UserAction("start") {
-            @Override
-            protected void onActionBegin() {
-                entities.stream().map(entity -> (Block) entity).forEach(new Consumer<Block>() {
-                    @Override
-                    public void accept(Block block) {
-                        block.setCanCross(true);
-                    }
-                });
-                log.info("开始画线");
-
-            }
-
-            @Override
-            protected void onAction() {
-
-            }
-
-            @Override
-            protected void onActionEnd() {
-                entities.stream().map(entity -> (Block) entity).forEach(Block::reset);
-                log.info("结束画线");
-            }
-        }, MouseButton.PRIMARY);
-
 
     }
 
@@ -112,17 +92,38 @@ public class COLGameApplication extends GameApplication implements EventHandler<
         int cellX = blockCrossedEvent.getBlock().getCellX();
         int cellY = blockCrossedEvent.getBlock().getCellY();
 
+        for (BlockPostion postion : lastCanTouchPostions) {
+            FXGL.getEventBus().fireEvent(new BlockCannotTouchEvent(postion.getX(),postion.getY()));
+
+        }
+        lastCanTouchPostions.clear();
         if (cellX - 1 >= 0&&cellY>=0 &&cellX-1<5&&cellY<5) {
-            FXGL.getEventBus().fireEvent(new BlockCanTouchEvent(cellX-1,cellY));
+            if (lastLinkBlock==null||(lastLinkBlock.getCellX()!=cellX-1||lastLinkBlock.getCellY()!=cellY)){
+                lastCanTouchPostions.add(new BlockPostion(cellX-1,cellY));
+            }
         }
         if (cellX + 1 >= 0&&cellY>=0 &&cellX+1<5&&cellY<5) {
-            FXGL.getEventBus().fireEvent(new BlockCanTouchEvent(cellX+1,cellY));
+            if (lastLinkBlock==null||(lastLinkBlock.getCellX()!=cellX+1||lastLinkBlock.getCellY()!=cellY)) {
+
+                lastCanTouchPostions.add(new BlockPostion(cellX + 1, cellY));
+            }
         }
         if (cellX >= 0&&cellY-1>=0 &&cellX<5&&cellY-1<5) {
-            FXGL.getEventBus().fireEvent(new BlockCanTouchEvent(cellX,cellY-1));
+            if (lastLinkBlock==null||(lastLinkBlock.getCellX()!=cellX||lastLinkBlock.getCellY()!=cellY-1)) {
+                lastCanTouchPostions.add(new BlockPostion(cellX, cellY - 1));
+
+            }
         }
         if (cellX  >= 0&&cellY+1>=0 &&cellX<5&&cellY+1<5) {
-            FXGL.getEventBus().fireEvent(new BlockCanTouchEvent(cellX,cellY+1));
+            if (lastLinkBlock==null||(lastLinkBlock.getCellX()!=cellX||lastLinkBlock.getCellY()!=cellY+1)) {
+                lastCanTouchPostions.add(new BlockPostion(cellX, cellY + 1));
+            }
         }
+        lastLinkBlock=blockCrossedEvent.getBlock();
+        for (BlockPostion postion : lastCanTouchPostions) {
+            FXGL.getEventBus().fireEvent(new BlockCanTouchEvent(postion.getX(),postion.getY()));
+
+        }
+        FXGL.getEventBus().fireEvent(new BlockCannotTouchEvent(lastLinkBlock.getCellX(), lastLinkBlock.getCellY()));
     }
 }
